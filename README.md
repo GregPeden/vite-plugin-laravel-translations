@@ -50,12 +50,15 @@ import laravelTranslations from 'vite-plugin-laravel-translations';
 export default defineConfig({
 	...
 	plugins: [
-		laravelTranslations({
-			// # TBC: To include JSON files
-			includeJson: false,
-			// # Declare: namespace (string|false)
-			namespace: false,
-		}),
+                laravelTranslations({
+                        // # TBC: To include JSON files
+                        includeJson: false,
+                        // # Declare: namespace (string|false)
+                        namespace: false,
+                        // # Optional: include or exclude specific language files
+                        // include: "server,errors",
+                        // exclude: "server,errors,local",
+                }),
 	],
 });
 ```
@@ -198,6 +201,18 @@ plugins: [
         absoluteLanguageDirectory: 'custom/path/to/lang',
     }),
 ],
+```
+
+## Including or excluding language files
+
+Use `include` or `exclude` to control which translation files are loaded. These options accept an array or comma separated list of patterns (regex allowed). Only one of them can be used at a time.
+
+```js
+plugins: [
+    laravelTranslations({
+        include: ['server'], // or exclude: 'server,errors,local'
+    }),
+]
 ```
 
 ## Asserting JSON Imports

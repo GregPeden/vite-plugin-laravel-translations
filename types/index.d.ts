@@ -11,6 +11,8 @@ export declare interface TranslationConfiguration {
   absoluteLanguageDirectory?: string | null; // Optional param to override default langDir if needed
   interpolation?: InterpolationConfiguration | null;
   useGlobalVar?: boolean; // Compatibility mode for older versions - v1.x.x uses import.meta.env.VITE_LARAVEL_TRANSLATIONS
+  include?: string | string[];
+  exclude?: string | string[];
 }
 
 export declare interface InterpolationConfiguration {
