@@ -21,6 +21,8 @@ export default async function laravelTranslations(pluginConfiguration: Translati
     assertJsonImport: false,
     absoluteLanguageDirectory: null,
     useGlobalVar: false,
+    include: undefined,
+    exclude: undefined,
   };
 
   // # Retrieve: Laravel Path (Absolute)
@@ -34,6 +36,10 @@ export default async function laravelTranslations(pluginConfiguration: Translati
     async config() {
       // # Merge: Configrations
       pluginConfiguration = Object.assign({}, defaultConfigurations, pluginConfiguration);
+
+      if (pluginConfiguration.include && pluginConfiguration.exclude) {
+        throw new Error('"include" and "exclude" options are mutually exclusive');
+      }
 
       // # Assign: Translations as LARAVEL_TRANSLATIONS/import.meta.env.VITE_LARAVEL_TRANSLATIONS
       const translationsVar = pluginConfiguration.useGlobalVar ? "LARAVEL_TRANSLATIONS" : "import.meta.env.VITE_LARAVEL_TRANSLATIONS";

@@ -11,6 +11,22 @@ import { mergeDeep } from "./utils/mergeDeep";
 import { TranslationConfiguration, InterpolationConfiguration, TranslationContentInterpolable } from "../types/index";
 
 /**
+ * Normalise include/exclude patterns to regular expressions
+ *
+ * @param pattern - Pattern string or array
+ * @returns RegExp[]
+ */
+const normalisePatterns = (pattern?: string | string[]): RegExp[] => {
+  if (!pattern) return [];
+  const patterns = Array.isArray(pattern) ? pattern : pattern.split(',');
+  return patterns
+    .map((p) => p.trim())
+    .filter(Boolean)
+    .map((p) => p.replace(/\.(php|json)$/i, ""))
+    .map((p) => new RegExp(p));
+};
+
+/**
  * Get the glob pattern based on the configuration
  *
  * @param shouldIncludeJson - Should include JSON files
@@ -90,7 +106,26 @@ export const buildTranslations = async (absLangPath: string, pluginConfiguration
   const globRegex = globPattern(pluginConfiguration.includeJson || false);
 
   // Fetch filenames as an array
-  const files = globSync(join(langDir, globRegex));
+  let files = globSync(join(langDir, globRegex));
+
+  const includePatterns = normalisePatterns(pluginConfiguration.include);
+  const excludePatterns = normalisePatterns(pluginConfiguration.exclude);
+
+  files = files.filter((file) => {
+    const pathSeparator = sep;
+    const fileRaw = file.replace(langDir + pathSeparator, "");
+    const relative = fileRaw.replace(extname(fileRaw), "").split(pathSeparator).join("/");
+
+    if (includePatterns.length) {
+      return includePatterns.some((regex) => regex.test(relative));
+    }
+
+    if (excludePatterns.length) {
+      return !excludePatterns.some((regex) => regex.test(relative));
+    }
+
+    return true;
+  });
 
   // Define initial translations
   const initialTranslations = Promise.resolve({});

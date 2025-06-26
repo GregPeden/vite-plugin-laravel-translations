@@ -204,4 +204,54 @@ describe("Loader feature", () => {
       expect(translations).toEqual(expectedTranslations);
     });
   });
+
+  describe("buildTranslations function with exclude", () => {
+    it("should exclude matched translation files", async () => {
+      // Given
+      const absLangPath = "tests/fixtures/translations-filter";
+      const pluginConfiguration = {
+        exclude: "server,errors,local",
+      };
+      const expectedTranslations = {
+        translations: {
+          key1: "value1",
+          key2: "value2",
+        },
+        "translations-for-build-test-php": {
+          "php-key": "php",
+          "key-from-php": "value-from-php",
+        },
+      };
+
+      // When
+      const translations = await buildTranslations(absLangPath, pluginConfiguration);
+
+      // Then
+      expect(translations).toEqual(expectedTranslations);
+    });
+  });
+
+  describe("buildTranslations function with include", () => {
+    it("should include only matched translation files", async () => {
+      // Given
+      const absLangPath = "tests/fixtures/translations-filter";
+      const pluginConfiguration = {
+        include: "server",
+      };
+      const expectedTranslations = {
+        server: {
+          "only-server": "only-server",
+          emails: {
+            email: "server-email",
+          },
+        },
+      };
+
+      // When
+      const translations = await buildTranslations(absLangPath, pluginConfiguration);
+
+      // Then
+      expect(translations).toEqual(expectedTranslations);
+    });
+  });
 });
