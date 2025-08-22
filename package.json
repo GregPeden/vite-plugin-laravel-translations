@@ -26,7 +26,6 @@
   },
   "scripts": {
     "build": "vite build",
-    "prepare": "yarn run build",
     "build:watch": "vite build --watch",
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
