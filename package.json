@@ -1,7 +1,6 @@
 {
   "name": "vite-plugin-laravel-translations",
   "version": "0.3.1",
-  "private": false,
   "description": "Vite Plugin to make Laravel Translations globally available as JSON field.",
   "author": "Dcode Group",
   "type": "module",
@@ -51,6 +50,7 @@
     "@types/jest": "^29.5.14",
     "@types/node": "^22.15.3",
     "@typescript-eslint/eslint-plugin": "^8.31.1",
+    "@typescript-eslint/parser": "^8.40.0",
     "eslint": "^9.26.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.3.1",
@@ -81,5 +81,6 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dcodegroup/vite-plugin-laravel-translations.git"
-  }
+  },
+  "packageManager": "yarn@4.9.3"
 }
