@@ -35,12 +35,12 @@ jobs:
 
       - name: Commit built assets
         run: |
-          if [ -n "$(git status --porcelain dist)" ]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add -f dist
-            git commit -m "chore: build dist" || echo "No changes to commit"
-            git push
-          else
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f dist
+          if git diff --cached --quiet; then
             echo "No changes to dist; skipping commit"
+          else
+            git commit -m "chore: build dist"
+            git push
           fi
